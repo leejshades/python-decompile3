@@ -57,6 +57,7 @@ def customize_for_version38(self, version):
                 (6, "store", PRECEDENCE["unpack"] - 1),
                 (7, "suite_stmts"),
             ),
+            "break_except": ("%|break\n",),
             "c_forelsestmt38": (
                 "%|for %c in %c:\n%+%c%-%|else:\n%+%c%-\n\n",
                 (2, "store"),
@@ -66,6 +67,11 @@ def customize_for_version38(self, version):
             ),
             "c_tryfinallystmt38": (
                 "%|try:\n%+%c%-%|finally:\n%+%c%-\n\n",
+                (1, "c_suite_stmts_opt"),
+                (-2, "c_suite_stmts_opt"),
+            ),
+            "c_tryfinallybstmt38": (
+                "%|try:\n%+%c\n%|break\n%-%|finally:\n%+%c%-\n\n",
                 (1, "c_suite_stmts_opt"),
                 (-2, "c_suite_stmts_opt"),
             ),
@@ -99,6 +105,14 @@ def customize_for_version38(self, version):
                 (0, "suite_stmts_opt"),
                 (1, "expr"),
             ),
+            "except_return38": ("%c", (-1, "return")),
+            "except_return_value38": ("%|return %c\n", (-1, "return")),
+            "except_with_break": (
+                "%|except:\n%+%c\n%c\n%-",
+                (3, "c_stmts"),
+                (4, "break_except"),
+            ),
+            "except_with_break2": ("%|except:\n%+%c\n%-", (3, "break_except")),
             "for38": (
                 "%|for %c in %c:\n%+%c%-\n\n",
                 (2, "store"),
@@ -147,6 +161,10 @@ def customize_for_version38(self, version):
                 "%|except:\n%+%c\n%c%-",
                 -2,
                 (-1, "pop_ex_return2"),
+            ),
+            "except_return_value2": (
+                "%c\n",
+                (-1, "return"),
             ),
             "set_for": (
                 " for %c in %c",
@@ -199,6 +217,16 @@ def customize_for_version38(self, version):
                 (3, ("except_cond1", "except_cond2")),
                 (4, ("except_ret38b", "except_ret38d", "except_suite")),
             ),
+            "try_except38r6": (
+                "%|try:\n%+%c\n%-\n%|except:\n%c\n\n",
+                (1, "returns_in_except2"),
+                (6, "except_ret38d"),
+            ),
+            "try_except38r7": (
+                "%|try:\n%+%c\n%-\n%|except:\n%+%|return %c%-\n\n",
+                (1, "suite_stmts_opt"),
+                (8, "return_expr"),
+            ),
             "try_except_as": (
                 "%|try:\n%+%c%-\n%|%-%c\n\n",
                 (
@@ -228,6 +256,12 @@ def customize_for_version38(self, version):
                 (5, "except_cond2"),
                 (6, "except_ret38c"),
             ),
+            "tryfinally38a_return": (
+                "%|try:\n%+%c%c%-%|finally:\n%+%c%-\n\n",
+                (2, "suite_stmts_opt"),
+                (3, "except_return38"),
+                (8, "return"),
+            ),
             "tryfinally38rstmt2": (
                 "%|try:\n%+%c%-%|finally:\n%+%c%-\n\n",
                 (4, "returns"),
@@ -243,6 +277,11 @@ def customize_for_version38(self, version):
                 "%|try:\n%+%c%-\n%|finally:\n%+%c%-\n\n",
                 (1, "suite_stmts_opt"),
                 (5, "suite_stmts_return"),
+            ),
+            "tryfinally38rstmt5": (
+                "%|try:\n%+%c%-\n%|finally:\n%+%|return %c%-\n\n",
+                (1, "try_except38r7"),
+                (2, "expr"),
             ),
             "tryfinally38stmt": (
                 "%|try:\n%+%c%-%|finally:\n%+%c%-\n\n",

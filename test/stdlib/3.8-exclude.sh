@@ -6,7 +6,7 @@ SKIP_TESTS=(
     #    except StopIteration:
     #        continue
 
-    [test_dict.py]=1 #
+    [test_dict.py]=1 # runtime error (kb, vb) = tb = b.popitem(); KeyError: 'popitem(): dictionary is empty'
 
     # Simple example. Compare with 3.7 Need 3.8 parse rules for exception handling return
     #    try:
@@ -18,27 +18,27 @@ SKIP_TESTS=(
 
     # These and the above may be due to new code generation or tests
     # between 3.8.3 and 3.8.5 ?
-    [test_decorators.py]=1 #
+    [test_decorators.py]=1 # parse error
 
-    [test_dtrace.py]=1 #
-    [test_exceptions.py]=1 #
+    [test_dtrace.py]=1 # Multiple runtine errors
+    [test_exceptions.py]=1 # parse error
     [test_ftplib.py]=1 #
-    [test_gc.py]=1 #
+    [test_gc.py]=1 # Syntax error: cannot assign to operator: detector.gc_happened or i += 1
     [test_gzip.py]=1 #
-    [test_itertools.py]=1 # Hangs on test_permutations probably "while True" vs "while"
+    [test_iter.py]=1 # Syntax error starting with 8131525;  2e35252 compiles but is semantically wrong
+    [test_itertools.py]=1 # Syntax error starting with 8131525;  2e35252 compiles but is semantically wrong
 
     [test_builtin.py]=1 # too long to run test; works on uncompyle6 probably "while True" vs "while"
 
-    [test_capi.py]=1 # Parse error. works on uncompyle6 ?
+    [test_capi.py]=1 # too long to run; works on uncompyle6 ? probably "while True" vs "while"
     [test_codeccallbacks.py]=1 # parses but runs for more than 30 seconds; works on uncompyle6 ?
 
-    [test_dataclasses.py]=1 # parses but errors and runs for more than 30 seconds; works on uncompyle6 ?
-    [test_deque.py]=1 # parses and runs some, but runs for more than 30 seconds; works on uncompyle6 ?
+    [test_dataclasses.py]=1 # SyntaxError: f-string: empty expression not allowed
+    [test_deque.py]=1 # FAILS on test_long_steadystate_queue_popright; works on uncompyle6 ?
 
-    [test_parser.py]=1 # parses but FAILS test_long_steadystate_queue_popright; works on uncompyle6 ?
+    [test_parser.py]=1 # TypeError: unsupported operand type(s) for +=: 'int' and 'NoneType'
 
-    [test_fileio.py]=1 # parses but runs for more than 30 seconds; works on uncompyle6 ?
-    [test_fork1.py]=1 # parses but runs for more than 30 seconds; works on uncompyle6 ?
+    [test_fileio.py]=1 # test failures
     [test_format.py]=1 # assert failure works on uncompyle6?
 
     [test_marshal.py]=1 # runs some but errors and times out; works on uncompyle6
@@ -47,13 +47,12 @@ SKIP_TESTS=(
     [test_time.py]=1 # parses but incorrect deparse; works on uncompyle6
     [test_urllib2net.py]=1 # parse error; works on uncompyle6
     [test_urllib.py]=1 # parser error; works on uncompyle6
-    [test_venv.py]=1 # parses but runs for more than 30 seconds; works on uncompyle6
+    [test_venv.py]=1 # Fails on its own
     [test_zipimport.py]=1 # test failures; works on uncompyle6
 
-    [test_profile.py]=1 # FIXME: parse error works in c28a3d1c
-    [test_shelve.py]=1 # FIXME: parse error works in c28a3d1c
+    [test_profile.py]=1 # FIXME: break outside of loop! works in c28a3d1c
+    [test_shelve.py]=1 # FIXME: probably incorrect parse to "or"; works in c28a3d1c
     [test_type_comments.py]=1 # FIXME: parse error works in c28a3d1c
-    [test_wsgiref.py]=1 # FIXME: parse error works in c28a3d1c
     # And others!
 
     [test_c_locale_coercion.py]=1 # FIXME: parse error works in a810b68e
@@ -62,20 +61,20 @@ SKIP_TESTS=(
     [test_nis.py]=1 # FIXME: works on ac5594b0; probably a "for38" reduction check
     [test__xxsubinterpreters.py]=1 # FIXME: works on ac5594b0; probably a "for38" reduction checks
 
-    [test_urllib2.py]=1 # FIXME: test failures works on uncompyle6?
+    [test_urllib2.py]=1 # FIXME: parse failure; works on uncompyle6?
 
     [test___all__.py]=1 # it fails on its own
     [test_argparse.py]=1 #- it fails on its own
     [test_asdl_parser.py]=1 # it fails on its own
     [test_ast.py]=1 # test fails - probably wrong python decompiled
+    [test_asynchat.py]=1 # Fails and takes more than 30 secons
     [test_asyncgen.py]=1 # parse error
-    [test_asyncore.py]=1 # test run takes more than 15 secs.
     [test_atexit.py]=1  # The atexit test looks for specific comments in error lines
 
-    [test_baseexception.py]=1  # test errors; control flow probably
+    [test_baseexception.py]=1  # syntaxerror
     [test_bigmem.py]=1  # parse error
     [test_binop.py]=1  # test errors: decompile to python probably incorrect
-    [test_bdb.py]=1  # parse error
+    [test_bdb.py]=1  # fails on its own
     [test_buffer.py]=1  # parse error; take a long time to decompile
     [test_bz2.py]=1  # parse error
 
@@ -93,11 +92,13 @@ SKIP_TESTS=(
     [test_coroutines.py]=1 # Parse error
     [test_ctypes.py]=1 # it fails on its own
 
+    [test_dataclasses.py]=1   # Syntax error in output: SyntaxError: f-string: empty expression not allowed
     [test_datetime.py]=1   # Takes too long
     [test_dbm_dumb.py]=1   # parse error
     [test_dbm_gnu.py]=1   # Takes too long
     [test_dbm_ndbm.py]=1 # it fails on its own
     [test_decimal.py]=1   # Parse error; takes a long time to decompile
+    [test_deque.py]=1   # Fails on test_long_steadystate_queue_pop{left,right}, Error on test_getitem
     [test_descr.py]=1   # test failure
     [test_devpoll.py]=1 # it fails on its own
     [test_dictcomps.py]=1 # test check failures
@@ -106,7 +107,7 @@ SKIP_TESTS=(
     [test_docxmlrpc.py]=1
 
     [test_enum.py]=1   # Test errors
-    [test_exception_hierarchy.py]=1 # control flow?
+    [test_exception_hierarchy.py]=1 # UnboundLocalError: local variable 'errnames' referenced before assignment
 
     [test_file_eintr.py]=1 # too long to run test; works on 3.7.7
     [test_fileinput.py]=1  # parse error
@@ -160,6 +161,7 @@ SKIP_TESTS=(
 
     [test_ossaudiodev.py]=1 # it fails on its own
 
+    [test_parser]=1 # TypeError: unsupported operand type(s) for +=: 'int' and 'NoneType'
     [test_pdb.py]=1 # Probably relies on comments
     [test_peepholer.py]=1 # decompile takes a long time; then test check error
     [test_pickle.py]=1 # Probably relies on comments
@@ -234,8 +236,6 @@ SKIP_TESTS=(
     [test_urlparse.py]=1 # test errors
     [test_uuid.py]=1 # parse error
 
-    [test_wait3.py]=1 # test errors
-    [test_wait4.py]=1 # test errors
     [test_weakref.py]=1 # test takes too long to run
     [test_weakset.py]=1 # parse error
     [test_with.py]=1 # parse error

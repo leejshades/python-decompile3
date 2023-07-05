@@ -99,3 +99,47 @@ def try_except_as_return_in_try(name, winreg):
     except RuntimeError as e:
         x = 5
         return winreg(e, x)
+
+
+def loop_try_except_break(f):
+    for i in [0]:
+        try:
+            f(i)
+        except:  # noqa
+            break
+
+
+def loop_try_except_break2(f):
+    for i in [0]:
+        try:
+            f(i)
+        except:  # noqa
+            f(i)
+            break
+
+
+def try_finally_return_twice(f):
+    try:
+        f()
+        return True
+    finally:
+        return 5
+
+
+def try_finally_return_twice2(f):
+    try:
+        f()
+        return True
+    except:  # noqa
+        winreg = 5
+        return winreg
+
+
+def nested_try_return(f):
+    try:
+        try:
+            f()
+        except:  # noqa
+            return f()
+    finally:
+        return f()
